@@ -1,7 +1,11 @@
 from flask import Flask, jsonify
 import psycopg2
+from flask_cors import CORS
 
 app = Flask(__name__)
+# Enable CORS
+CORS(app)
+
 
 @app.route('/names')
 def get_names():
@@ -21,7 +25,10 @@ def get_names():
     # Close the cursor and connection
     cur.close()
     conn.close()
-    return jsonify(names=names)
+    response = jsonify(names=names)
+    response.headers.add('Access-Control-Allow-Origin', '*')
+    return response
+
 
 if __name__ == '__main__':
     app.run()
